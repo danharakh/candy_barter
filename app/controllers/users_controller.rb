@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+  before_filter :login_required, :except => [:index]
+
   def index
     @users = User.page(params[:page]).per(10)
   end
@@ -10,4 +12,5 @@ class UsersController < ApplicationController
       @user = User.find(params[:id])
     end
   end
+
 end

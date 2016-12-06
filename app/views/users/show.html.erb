@@ -22,11 +22,6 @@
 
     </dl>
 
-    <div class="btn-group btn-group-justified">
-      <a href="/users" class="btn btn-primary">
-        Back
-      </a>
-    </div>
   </div>
 </div>
 
@@ -92,16 +87,16 @@
 <!-- A User has many inventories -->
 
 <div class="row">
-  <div class="col-md-12">
+  <div class="col-md-6">
     <ul class="list-group">
       <li class="list-group-item list-group-item-info">
-        Inventories
+        Candy Inventory
       </li>
 
       <% @user.inventories.each do |inventory| %>
         <li class="list-group-item">
           <a href="/inventories/<%= inventory.id %>">
-            <%= inventory.user_id %>
+            <%= inventory.item.name %>
           </a>
           <div class="btn-group btn-group-xs pull-right">
             <a href="/inventories/<%= inventory.id %>" class="btn btn-primary">
@@ -121,6 +116,43 @@
     </ul>
   </div>
 </div>
+
+<!-- drop down box to add  candy inventory -->
+<div class="row">
+  <div class="col-md-4">
+    <form action="/create_inventory" method="post">
+      <!-- Hidden input for authenticity token to protect from forgery -->
+      <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
+
+      <!-- Label and input for user_id -->
+      <input type="hidden" name="user_id" value="<%= current_user.id %>">
+
+      <!-- Label and input for item_id -->
+      <div class="form-group">
+        <label for="item_id" class="control-label">
+          Add candy to your stash:
+        </label>
+
+        <%= select_tag(:item_id, options_from_collection_for_select(Item.all, :id, :name), :class => "form-control") %>
+      </div>
+
+      <!-- Label and input for quantity -->
+      <div class="form-group">
+        <label for="quantity" class="control-label">
+          Quantity
+        </label>
+
+        <input type="text" id="quantity" name="quantity" placeholder="Quantity" class="form-control" value="1">
+      </div>
+
+      <button class="btn btn-success">
+        Create Inventory
+      </button>
+
+    </form>
+  </div>
+</div>
+
 
 <!-- A User has many sent_proposals -->
 

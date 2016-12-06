@@ -13,5 +13,6 @@ class Inventory < ApplicationRecord
   # Indirect associations
 
   # Validations
+  validates :user_id, :uniqueness => { :scope => [:item_id] }
 
 end

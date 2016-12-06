@@ -12,4 +12,8 @@ class ApplicationController < ActionController::Base
 
     devise_parameter_sanitizer.permit(:account_update, :keys => [:zipcode, :first_name, :last_name])
   end
+
+  def login_required
+    redirect_to("/users") if current_user.id != params["id"].to_i
+  end
 end
