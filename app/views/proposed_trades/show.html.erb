@@ -1,0 +1,252 @@
+<div class="page-header">
+  <h3>Proposed Trade #<%= @proposed_trade.id %></h3>
+</div>
+
+<div class="row">
+  <div class="col-md-12 mb-2">
+    <dl class="dl-horizontal">
+      <dt>Status</dt>
+      <dd><%= @proposed_trade.status %></dd>
+
+      <dt>Star rating</dt>
+      <dd><%= @proposed_trade.star_rating %></dd>
+
+      <dt>Proposer</dt>
+      <dd>
+        <% if @proposed_trade.proposer.present? %>
+          <a href="/users/<%= @proposed_trade.proposer_id %>">
+            <%= @proposed_trade.proposer.email %>
+          </a>
+        <% end %>
+      </dd>
+
+      <dt>Recipient</dt>
+      <dd>
+        <% if @proposed_trade.recipient.present? %>
+          <a href="/users/<%= @proposed_trade.recipient_id %>">
+            <%= @proposed_trade.recipient.email %>
+          </a>
+        <% end %>
+      </dd>
+
+    </dl>
+
+    <div class="btn-group btn-group-justified">
+      <a href="/proposed_trades" class="btn btn-primary">
+        Back
+      </a>
+      <% if current_user == @proposed_trade.proposer %>
+        <a href="/proposed_trades/<%= @proposed_trade.id %>/edit" class="btn btn-warning">
+          Edit
+        </a>
+        <a href="/delete_proposed_trade/<%= @proposed_trade.id %>" class="btn btn-danger" rel="nofollow">
+          Delete
+        </a>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<!-- A Proposed trade has many inventories -->
+
+<div class="row">
+  <div class="col-md-12">
+    <ul class="list-group">
+      <li class="list-group-item list-group-item-info">
+        Inventories
+      </li>
+
+      <% @proposed_trade.inventories.each do |inventory| %>
+        <li class="list-group-item">
+          <a href="/inventories/<%= inventory.id %>">
+            <%= inventory.user_id %>
+          </a>
+          <div class="btn-group btn-group-xs pull-right">
+            <a href="/inventories/<%= inventory.id %>" class="btn btn-primary">
+              <i class="fa fa-search-plus"></i>
+            </a>
+            <a href="/inventories/<%= inventory.id %>/edit" class="btn btn-warning">
+              <i class="fa fa-edit"></i>
+            </a>
+            <a href="/delete_inventory/<%= inventory.id %>" class="btn btn-danger" rel="nofollow">
+              <i class="fa fa-trash-o"></i>
+            </a>
+          </div>
+        </li>
+      <% end %>
+
+      <li class="list-group-item">
+        <form action="/create_inventory" method="post">
+      <!-- Hidden input for authenticity token to protect from forgery -->
+      <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
+
+      <!-- Label and input for user_id -->
+      <input type="hidden" name="user_id" value="<%= current_user.id %>">
+
+      <!-- Label and input for item_id -->
+      <div class="form-group">
+        <label for="item_id" class="control-label">
+          Item
+        </label>
+
+        <%= select_tag(:item_id, options_from_collection_for_select(Item.all, :id, :name), :class => "form-control") %>
+      </div>
+
+      <!-- Label and input for quantity -->
+      <div class="form-group">
+        <label for="quantity" class="control-label">
+          Quantity
+        </label>
+
+        <input type="text" id="quantity" name="quantity" placeholder="Quantity" class="form-control" value="">
+      </div>
+
+      <!-- Label and input for proposed_trade_id -->
+      <div class="form-group">
+        <label for="proposed_trade_id" class="control-label">
+          Proposed trade
+        </label>
+
+        <%= select_tag(:proposed_trade_id, options_from_collection_for_select(ProposedTrade.all, :id, :status), :class => "form-control") %>
+      </div>
+
+      <button class="btn btn-block btn-success">
+        Create Inventory
+      </button>
+    </form>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<!-- A Proposed trade has many line_items -->
+
+<div class="row">
+  <div class="col-md-12">
+    <ul class="list-group">
+      <li class="list-group-item list-group-item-info">
+        Line_items
+      </li>
+
+      <% @proposed_trade.line_items.each do |line_item| %>
+        <li class="list-group-item">
+          <a href="/line_items/<%= line_item.id %>">
+            <%= line_item.inventory_id %>
+          </a>
+          <div class="btn-group btn-group-xs pull-right">
+            <a href="/line_items/<%= line_item.id %>" class="btn btn-primary">
+              <i class="fa fa-search-plus"></i>
+            </a>
+            <a href="/line_items/<%= line_item.id %>/edit" class="btn btn-warning">
+              <i class="fa fa-edit"></i>
+            </a>
+            <a href="/delete_line_item/<%= line_item.id %>" class="btn btn-danger" rel="nofollow">
+              <i class="fa fa-trash-o"></i>
+            </a>
+          </div>
+        </li>
+      <% end %>
+
+      <li class="list-group-item">
+        <form action="/create_line_item" method="post">
+      <!-- Hidden input for authenticity token to protect from forgery -->
+      <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
+
+      <!-- Label and input for inventory_id -->
+      <div class="form-group">
+        <label for="inventory_id" class="control-label">
+          Inventory
+        </label>
+
+        <%= select_tag(:inventory_id, options_from_collection_for_select(Inventory.all, :id, :user_id), :class => "form-control") %>
+      </div>
+
+      <!-- Label and input for proposed_trade_id -->
+      <div class="form-group">
+        <label for="proposed_trade_id" class="control-label">
+          Proposed trade
+        </label>
+
+        <%= select_tag(:proposed_trade_id, options_from_collection_for_select(ProposedTrade.all, :id, :status), :class => "form-control") %>
+      </div>
+
+      <!-- Label and input for quantity -->
+      <div class="form-group">
+        <label for="quantity" class="control-label">
+          Quantity
+        </label>
+
+        <input type="text" id="quantity" name="quantity" placeholder="Quantity" class="form-control" value="">
+      </div>
+
+      <button class="btn btn-block btn-success">
+        Create Line Item
+      </button>
+    </form>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<!-- A Proposed trade has many comments -->
+
+<div class="row">
+  <div class="col-md-12">
+    <ul class="list-group">
+      <li class="list-group-item list-group-item-info">
+        Comments
+      </li>
+
+      <% @proposed_trade.comments.each do |comment| %>
+        <li class="list-group-item">
+          <a href="/comments/<%= comment.id %>">
+            <%= comment.proposed_trade_id %>
+          </a>
+          <div class="btn-group btn-group-xs pull-right">
+            <a href="/comments/<%= comment.id %>" class="btn btn-primary">
+              <i class="fa fa-search-plus"></i>
+            </a>
+            <a href="/comments/<%= comment.id %>/edit" class="btn btn-warning">
+              <i class="fa fa-edit"></i>
+            </a>
+            <a href="/delete_comment/<%= comment.id %>" class="btn btn-danger" rel="nofollow">
+              <i class="fa fa-trash-o"></i>
+            </a>
+          </div>
+        </li>
+      <% end %>
+
+      <li class="list-group-item">
+        <form action="/create_comment" method="post">
+      <!-- Hidden input for authenticity token to protect from forgery -->
+      <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
+
+      <!-- Label and input for proposed_trade_id -->
+      <div class="form-group">
+        <label for="proposed_trade_id" class="control-label">
+          Proposed trade
+        </label>
+
+        <%= select_tag(:proposed_trade_id, options_from_collection_for_select(ProposedTrade.all, :id, :status), :class => "form-control") %>
+      </div>
+
+      <!-- Label and input for user_id -->
+      <input type="hidden" name="user_id" value="<%= current_user.id %>">
+
+      <!-- Label and input for body -->
+      <div class="form-group">
+        <label for="body" class="control-label">
+          Body
+        </label>
+
+        <input type="text" id="body" name="body" placeholder="Body" class="form-control" value="">
+      </div>
+
+      <button class="btn btn-block btn-success">
+        Create Comment
+      </button>
+    </form>
+      </li>
+    </ul>
+  </div>
+</div>

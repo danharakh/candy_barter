@@ -1,0 +1,55 @@
+<!-- Validation failure messages -->
+<% if @item.errors.any? %>
+  <% @item.errors.full_messages.each do |message| %>
+    <div class="alert alert-dismissable alert-danger">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+      <%= message %>
+    </div>
+  <% end %>
+<% end %>
+
+<div class="page-header">
+  <h3>Add Item</h3>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <form action="/create_item" method="post">
+      <!-- Hidden input for authenticity token to protect from forgery -->
+      <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
+
+      <!-- Label and input for name -->
+      <div class="form-group">
+        <label for="name" class="control-label">
+          Name
+        </label>
+
+        <input type="text" id="name" name="name" placeholder="Name" class="form-control" value="<%= @item.name %>">
+      </div>
+
+      <!-- Label and input for descriptive_information -->
+      <div class="form-group">
+        <label for="descriptive_information" class="control-label">
+          Descriptive information
+        </label>
+
+        <input type="text" id="descriptive_information" name="descriptive_information" placeholder="Descriptive information" class="form-control" value="<%= @item.descriptive_information %>">
+      </div>
+
+      <!-- Label and input for image_url -->
+      <div class="form-group">
+        <label for="image_url" class="control-label">
+          Image url
+        </label>
+
+        <textarea id="image_url" name="image_url" placeholder="Image url" class="form-control" rows="3"><%= @item.image_url %></textarea>
+      </div>
+
+      <button class="btn btn-success">
+        Create Item
+      </button>
+      or
+      <a href="/items">Cancel</a>
+    </form>
+  </div>
+</div>

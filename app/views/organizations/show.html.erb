@@ -1,0 +1,76 @@
+<div class="page-header">
+  <h3>Organization #<%= @organization.id %></h3>
+</div>
+
+<div class="row">
+  <div class="col-md-12 mb-2">
+    <dl class="dl-horizontal">
+      <dt>Name</dt>
+      <dd><%= @organization.name %></dd>
+
+      <dt>Description</dt>
+      <dd><%= @organization.description %></dd>
+
+    </dl>
+
+    <div class="btn-group btn-group-justified">
+      <a href="/organizations" class="btn btn-primary">
+        Back
+      </a>
+      <a href="/organizations/<%= @organization.id %>/edit" class="btn btn-warning">
+        Edit
+      </a>
+      <a href="/delete_organization/<%= @organization.id %>" class="btn btn-danger" rel="nofollow">
+        Delete
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- A Organization has many memberships -->
+
+<div class="row">
+  <div class="col-md-12">
+    <ul class="list-group">
+      <li class="list-group-item list-group-item-info">
+        Memberships
+      </li>
+
+      <% @organization.memberships.each do |membership| %>
+        <li class="list-group-item">
+          <a href="/memberships/<%= membership.id %>">
+            <%= membership.user_id %>
+          </a>
+          <div class="btn-group btn-group-xs pull-right">
+            <a href="/memberships/<%= membership.id %>" class="btn btn-primary">
+              <i class="fa fa-search-plus"></i>
+            </a>
+            <a href="/memberships/<%= membership.id %>/edit" class="btn btn-warning">
+              <i class="fa fa-edit"></i>
+            </a>
+            <a href="/delete_membership/<%= membership.id %>" class="btn btn-danger" rel="nofollow">
+              <i class="fa fa-trash-o"></i>
+            </a>
+          </div>
+        </li>
+      <% end %>
+
+      <li class="list-group-item">
+        <form action="/create_membership" method="post">
+      <!-- Hidden input for authenticity token to protect from forgery -->
+      <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
+
+      <!-- Label and input for user_id -->
+      <input type="hidden" name="user_id" value="<%= current_user.id %>">
+
+      <!-- Label and input for organization_id -->
+      <input type="hidden" name="organization_id" value="<%= @organization.id %>">
+
+      <button class="btn btn-block btn-success">
+        Create Membership
+      </button>
+    </form>
+      </li>
+    </ul>
+  </div>
+</div>

@@ -1,0 +1,196 @@
+<div class="page-header">
+  <h3>User #<%= @user.id %></h3>
+</div>
+
+<div class="row">
+  <div class="col-md-12 mb-2">
+    <dl class="dl-horizontal">
+      <dt>Email</dt>
+      <dd><%= @user.email %></dd>
+
+      <dt>Password</dt>
+      <dd><%= @user.password %></dd>
+
+      <dt>Zipcode</dt>
+      <dd><%= @user.zipcode %></dd>
+
+      <dt>First name</dt>
+      <dd><%= @user.first_name %></dd>
+
+      <dt>Last name</dt>
+      <dd><%= @user.last_name %></dd>
+
+    </dl>
+
+    <div class="btn-group btn-group-justified">
+      <a href="/users" class="btn btn-primary">
+        Back
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- A User has many memberships -->
+
+<div class="row">
+  <div class="col-md-12">
+    <ul class="list-group">
+      <li class="list-group-item list-group-item-info">
+        Memberships
+      </li>
+
+      <% @user.memberships.each do |membership| %>
+        <li class="list-group-item">
+          <a href="/memberships/<%= membership.id %>">
+            <%= membership.user_id %>
+          </a>
+          <div class="btn-group btn-group-xs pull-right">
+            <a href="/memberships/<%= membership.id %>" class="btn btn-primary">
+              <i class="fa fa-search-plus"></i>
+            </a>
+            <%if current_user == membership.user %>
+              <a href="/memberships/<%= membership.id %>/edit" class="btn btn-warning">
+                <i class="fa fa-edit"></i>
+              </a>
+              <a href="/delete_membership/<%= membership.id %>" class="btn btn-danger" rel="nofollow">
+                <i class="fa fa-trash-o"></i>
+              </a>
+            <% end %>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>
+
+<!-- A User has many inventories -->
+
+<div class="row">
+  <div class="col-md-12">
+    <ul class="list-group">
+      <li class="list-group-item list-group-item-info">
+        Inventories
+      </li>
+
+      <% @user.inventories.each do |inventory| %>
+        <li class="list-group-item">
+          <a href="/inventories/<%= inventory.id %>">
+            <%= inventory.user_id %>
+          </a>
+          <div class="btn-group btn-group-xs pull-right">
+            <a href="/inventories/<%= inventory.id %>" class="btn btn-primary">
+              <i class="fa fa-search-plus"></i>
+            </a>
+            <%if current_user == inventory.user %>
+              <a href="/inventories/<%= inventory.id %>/edit" class="btn btn-warning">
+                <i class="fa fa-edit"></i>
+              </a>
+              <a href="/delete_inventory/<%= inventory.id %>" class="btn btn-danger" rel="nofollow">
+                <i class="fa fa-trash-o"></i>
+              </a>
+            <% end %>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>
+
+<!-- A User has many sent_proposals -->
+
+<div class="row">
+  <div class="col-md-12">
+    <ul class="list-group">
+      <li class="list-group-item list-group-item-info">
+        Sent_proposals
+      </li>
+
+      <% @user.sent_proposals.each do |proposed_trade| %>
+        <li class="list-group-item">
+          <a href="/proposed_trades/<%= proposed_trade.id %>">
+            <%= proposed_trade.status %>
+          </a>
+          <div class="btn-group btn-group-xs pull-right">
+            <a href="/proposed_trades/<%= proposed_trade.id %>" class="btn btn-primary">
+              <i class="fa fa-search-plus"></i>
+            </a>
+            <%if current_user == proposed_trade.recipient %>
+              <a href="/proposed_trades/<%= proposed_trade.id %>/edit" class="btn btn-warning">
+                <i class="fa fa-edit"></i>
+              </a>
+              <a href="/delete_proposed_trade/<%= proposed_trade.id %>" class="btn btn-danger" rel="nofollow">
+                <i class="fa fa-trash-o"></i>
+              </a>
+            <% end %>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>
+
+<!-- A User has many received_proposals -->
+
+<div class="row">
+  <div class="col-md-12">
+    <ul class="list-group">
+      <li class="list-group-item list-group-item-info">
+        Received_proposals
+      </li>
+
+      <% @user.received_proposals.each do |proposed_trade| %>
+        <li class="list-group-item">
+          <a href="/proposed_trades/<%= proposed_trade.id %>">
+            <%= proposed_trade.status %>
+          </a>
+          <div class="btn-group btn-group-xs pull-right">
+            <a href="/proposed_trades/<%= proposed_trade.id %>" class="btn btn-primary">
+              <i class="fa fa-search-plus"></i>
+            </a>
+            <%if current_user == proposed_trade.recipient %>
+              <a href="/proposed_trades/<%= proposed_trade.id %>/edit" class="btn btn-warning">
+                <i class="fa fa-edit"></i>
+              </a>
+              <a href="/delete_proposed_trade/<%= proposed_trade.id %>" class="btn btn-danger" rel="nofollow">
+                <i class="fa fa-trash-o"></i>
+              </a>
+            <% end %>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>
+
+<!-- A User has many comments -->
+
+<div class="row">
+  <div class="col-md-12">
+    <ul class="list-group">
+      <li class="list-group-item list-group-item-info">
+        Comments
+      </li>
+
+      <% @user.comments.each do |comment| %>
+        <li class="list-group-item">
+          <a href="/comments/<%= comment.id %>">
+            <%= comment.proposed_trade_id %>
+          </a>
+          <div class="btn-group btn-group-xs pull-right">
+            <a href="/comments/<%= comment.id %>" class="btn btn-primary">
+              <i class="fa fa-search-plus"></i>
+            </a>
+            <%if current_user == comment.user %>
+              <a href="/comments/<%= comment.id %>/edit" class="btn btn-warning">
+                <i class="fa fa-edit"></i>
+              </a>
+              <a href="/delete_comment/<%= comment.id %>" class="btn btn-danger" rel="nofollow">
+                <i class="fa fa-trash-o"></i>
+              </a>
+            <% end %>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>

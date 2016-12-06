@@ -1,0 +1,58 @@
+<!-- Validation failure messages -->
+<% if @proposed_trade.errors.any? %>
+  <% @proposed_trade.errors.full_messages.each do |message| %>
+    <div class="alert alert-dismissable alert-danger">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+      <%= message %>
+    </div>
+  <% end %>
+<% end %>
+
+<div class="page-header">
+  <h3>Add Proposed Trade</h3>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <form action="/create_proposed_trade" method="post">
+      <!-- Hidden input for authenticity token to protect from forgery -->
+      <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
+
+      <!-- Label and input for status -->
+      <div class="form-group">
+        <label for="status" class="control-label">
+          Status
+        </label>
+
+        <input type="text" id="status" name="status" placeholder="Status" class="form-control" value="<%= @proposed_trade.status %>">
+      </div>
+
+      <!-- Label and input for star_rating -->
+      <div class="form-group">
+        <label for="star_rating" class="control-label">
+          Star rating
+        </label>
+
+        <input type="text" id="star_rating" name="star_rating" placeholder="Star rating" class="form-control" value="<%= @proposed_trade.star_rating %>">
+      </div>
+
+      <!-- Label and input for proposer_id -->
+      <input type="hidden" name="proposer_id" value="<%= current_user.id %>">
+
+      <!-- Label and input for recipient_id -->
+      <div class="form-group">
+        <label for="recipient_id" class="control-label">
+          Recipient
+        </label>
+
+        <%= select_tag(:recipient_id, options_from_collection_for_select(User.all, :id, :email, @proposed_trade.recipient_id), :class => "form-control") %>
+      </div>
+
+      <button class="btn btn-success">
+        Create Proposed Trade
+      </button>
+      or
+      <a href="/proposed_trades">Cancel</a>
+    </form>
+  </div>
+</div>

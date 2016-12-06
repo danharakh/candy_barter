@@ -1,0 +1,42 @@
+<div class="page-header">
+  <h3>Membership #<%= @membership.id %></h3>
+</div>
+
+<div class="row">
+  <div class="col-md-12 mb-2">
+    <dl class="dl-horizontal">
+      <dt>User</dt>
+      <dd>
+        <% if @membership.user.present? %>
+          <a href="/users/<%= @membership.user_id %>">
+            <%= @membership.user.email %>
+          </a>
+        <% end %>
+      </dd>
+
+      <dt>Organization</dt>
+      <dd>
+        <% if @membership.organization.present? %>
+          <a href="/organizations/<%= @membership.organization_id %>">
+            <%= @membership.organization.name %>
+          </a>
+        <% end %>
+      </dd>
+
+    </dl>
+
+    <div class="btn-group btn-group-justified">
+      <a href="/memberships" class="btn btn-primary">
+        Back
+      </a>
+      <% if current_user == @membership.user %>
+        <a href="/memberships/<%= @membership.id %>/edit" class="btn btn-warning">
+          Edit
+        </a>
+        <a href="/delete_membership/<%= @membership.id %>" class="btn btn-danger" rel="nofollow">
+          Delete
+        </a>
+      <% end %>
+    </div>
+  </div>
+</div>
