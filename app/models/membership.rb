@@ -8,5 +8,5 @@ class Membership < ApplicationRecord
   # Indirect associations
 
   # Validations
-
+  validates :user_id, :uniqueness => { :scope => [:organization_id] }
 end
