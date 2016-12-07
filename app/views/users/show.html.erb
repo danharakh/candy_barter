@@ -22,6 +22,11 @@
 
     </dl>
 
+    <div class="btn-group btn-group-justified">
+      <a href="/users" class="btn btn-primary">
+        Back
+      </a>
+    </div>
   </div>
 </div>
 
@@ -92,6 +97,11 @@
       <div class="panel-heading">
         Candy Inventory
       </div>
+  <div class="col-md-12">
+    <ul class="list-group">
+      <li class="list-group-item list-group-item-info">
+        Inventories
+      </li>
 
       <table style="width:100%">
         <tr>
@@ -103,7 +113,7 @@
         <tr>
           <td>
           <a href="/inventories/<%= inventory.id %>">
-            <%= inventory.item.name %>
+            <%= inventory.user_id %>
           </a>
           </td>
           <td><%= inventory.quantity %></td>

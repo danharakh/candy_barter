@@ -23,7 +23,7 @@ class User < ApplicationRecord
 
   # Validations
 
-  validates :username, :presence => true, :uniqueness => true
+  # validates :username, :presence => true, :uniqueness => true
 
   validates :first_name, :presence => true
 

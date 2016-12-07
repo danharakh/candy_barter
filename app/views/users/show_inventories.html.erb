@@ -1,3 +1,6 @@
+<div class="page-header">
+  <h3>Why not propose a trade?</h3>
+</div>
 <div class="row">
   <div class="col-md-6">
     <div class="panel panel-default">
@@ -25,14 +28,6 @@
             <a href="/inventories/<%= inventory.id %>" class="btn btn-primary">
               <i class="fa fa-search-plus"></i>
             </a>
-            <%if current_user == inventory.user %>
-              <a href="/inventories/<%= inventory.id %>/edit" class="btn btn-warning">
-                <i class="fa fa-edit"></i>
-              </a>
-              <a href="/delete_inventory/<%= inventory.id %>" class="btn btn-danger" rel="nofollow">
-                <i class="fa fa-trash-o"></i>
-              </a>
-            <% end %>
           </div>
         </td>
         </tr>
