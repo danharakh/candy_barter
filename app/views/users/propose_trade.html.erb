@@ -1,6 +1,6 @@
 <div class="page-header">
   <h1>
-    Users
+    Propose Trades
   </h1>
 </div>
 
@@ -17,13 +17,15 @@
 
       <% @users.each do |user| %>
       <tr>
+        <% if user.id != current_user.id %>
         <td><%= user.email %></td>
         <td><%= user.zipcode %></td>
         <td><%= user.first_name %></td>
         <td><%= user.last_name %></td>
         <td>
-          <a href="usersblah/<%= user.id %>/inventories" class="btn btn-primary">Browse Inventory</a>
+          <a href="/inventories/<%= user.id %>" class="btn btn-primary">Browse Inventory</a>
         </td>
+        <% end %>
       </tr>
       <% end %>
     </table>

@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
-  
+
   root :to => "users#show"
   # Routes for the Comment resource:
   # CREATE
@@ -127,6 +127,10 @@ Rails.application.routes.draw do
   # READ
   get "/users", :controller => "users", :action => "index"
   get "/users/:id", :controller => "users", :action => "show"
+  
+  get "/users/:id/inventories", :controller => "users", :action => "show_inventories"
+
+  get "/propose_trade", :controller => "users", :action => "blah"
 
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

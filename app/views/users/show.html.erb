@@ -88,16 +88,27 @@
 
 <div class="row">
   <div class="col-md-6">
-    <ul class="list-group">
-      <li class="list-group-item list-group-item-info">
+    <div class="panel panel-default">
+      <div class="panel-heading">
         Candy Inventory
-      </li>
+      </div>
 
+      <table style="width:100%">
+        <tr>
+          <th>Item</th>
+          <th>Quantity</th>
+          <th>Description</th>
+        </tr>
       <% @user.inventories.each do |inventory| %>
-        <li class="list-group-item">
+        <tr>
+          <td>
           <a href="/inventories/<%= inventory.id %>">
             <%= inventory.item.name %>
           </a>
+          </td>
+          <td><%= inventory.quantity %></td>
+          <td><%= inventory.item.descriptive_information %></td>
+          <td>
           <div class="btn-group btn-group-xs pull-right">
             <a href="/inventories/<%= inventory.id %>" class="btn btn-primary">
               <i class="fa fa-search-plus"></i>
@@ -111,9 +122,11 @@
               </a>
             <% end %>
           </div>
-        </li>
+        </td>
+        </tr>
       <% end %>
-    </ul>
+      </table>
+    </div>
   </div>
 </div>
 
@@ -132,8 +145,8 @@
         <label for="item_id" class="control-label">
           Add candy to your stash:
         </label>
-
-        <%= select_tag(:item_id, options_from_collection_for_select(Item.all, :id, :name), :class => "form-control") %>
+        <%= select_tag(:item_id, options_from_collection_for_select(Item.all, :id, :name),
+         :class => "form-control") %>
       </div>
 
       <!-- Label and input for quantity -->
@@ -153,7 +166,7 @@
   </div>
 </div>
 
-
+<a href="/propose_trade" class="btn btn-primary">Propose Trade</a>
 <!-- A User has many sent_proposals -->
 
 <div class="row">

@@ -1,5 +1,5 @@
 class InventoriesController < ApplicationController
-  before_action :current_user_must_be_inventory_user, :only => [:show, :edit, :update, :destroy]
+  before_action :current_user_must_be_inventory_user, :only => [:edit, :update, :destroy]
 
   def current_user_must_be_inventory_user
     inventory = Inventory.find(params[:id])
