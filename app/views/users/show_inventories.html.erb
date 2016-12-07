@@ -1,5 +1,7 @@
 <div class="page-header">
-  <h3>Why not propose a trade?</h3>
+  <h3>Why not propose a trade?
+    <sub> Click on an item to propose a trade</sub>
+  </h3>
 </div>
 <div class="row">
   <div class="col-md-6">
@@ -17,19 +19,12 @@
       <% @inventory.each do |inventory| %>
         <tr>
           <td>
-          <a href="/inventories/<%= inventory.id %>">
+          <a href="/inventories/<%= inventory.id %>/propose_trade">
             <%= inventory.item.name %>
           </a>
           </td>
           <td><%= inventory.quantity %></td>
           <td><%= inventory.item.descriptive_information %></td>
-          <td>
-          <div class="btn-group btn-group-xs pull-right">
-            <a href="/inventories/<%= inventory.id %>" class="btn btn-primary">
-              <i class="fa fa-search-plus"></i>
-            </a>
-          </div>
-        </td>
         </tr>
       <% end %>
       </table>

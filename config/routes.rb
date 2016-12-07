@@ -69,6 +69,8 @@ Rails.application.routes.draw do
 
   # DELETE
   get "/delete_inventory/:id", :controller => "inventories", :action => "destroy"
+
+  get "/inventories/:id/propose_trade", :controller => "inventories", :action => "propose_trade"
   #------------------------------
 
   # Routes for the Item resource:
@@ -127,10 +129,8 @@ Rails.application.routes.draw do
   # READ
   get "/users", :controller => "users", :action => "index"
   get "/users/:id", :controller => "users", :action => "show"
-  
-  get "/users/:id/inventories", :controller => "users", :action => "show_inventories"
 
-  get "/propose_trade", :controller => "users", :action => "blah"
+  get "/users/:id/inventories", :controller => "users", :action => "show_inventories"
 
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

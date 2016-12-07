@@ -16,9 +16,4 @@ class UsersController < ApplicationController
     @inventory = User.find(params[:id]).inventories
   end
 
-  def blah
-    klfj
-    render "propose_trade.html.erb"
-  end
-
 end

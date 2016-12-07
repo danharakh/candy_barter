@@ -95,4 +95,9 @@ class ProposedTradesController < ApplicationController
       redirect_back(:fallback_location => "/", :notice => "Proposed trade deleted.")
     end
   end
+
+  def propose_trade
+
+  end
+  
 end
