@@ -16,4 +16,7 @@ class UsersController < ApplicationController
     @inventory = User.find(params[:id]).inventories
   end
 
+  def update_status
+    l;dkf
+  end
 end

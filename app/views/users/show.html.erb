@@ -189,17 +189,26 @@
       <% @user.sent_proposals.each do |proposed_trade| %>
         <li class="list-group-item">
           <a href="/proposed_trades/<%= proposed_trade.id %>">
-            <%= proposed_trade.status %>
+            <%= proposed_trade.status %>:
+            <%if proposed_trade.line_items[0].inventory.user_id == current_user.id%>
+              You have offered <%=proposed_trade.line_items[0].quantity%> <%= proposed_trade.line_items[0].inventory.item.name%>
+               to <%= proposed_trade.line_items[1].inventory.user.first_name %>
+               <%= proposed_trade.line_items[1].inventory.user.last_name %>
+               in return for
+              <%= proposed_trade.line_items[1].quantity%>  <%= proposed_trade.line_items[1].inventory.item.name%>
+            <%else%>
+            You have offered <%=proposed_trade.line_items[1].quantity%> <%= proposed_trade.line_items[1].inventory.item.name%>
+             to <%= proposed_trade.line_items[0].inventory.user.first_name %>
+             <%= proposed_trade.line_items[0].inventory.user.last_name %>
+             in return for
+            <%= proposed_trade.line_items[0].quantity%> <%= proposed_trade.line_items[0].inventory.item.name%>
+            <%end%>
           </a>
+
           <div class="btn-group btn-group-xs pull-right">
-            <a href="/proposed_trades/<%= proposed_trade.id %>" class="btn btn-primary">
-              <i class="fa fa-search-plus"></i>
-            </a>
+
             <%if current_user == proposed_trade.recipient %>
-              <a href="/proposed_trades/<%= proposed_trade.id %>/edit" class="btn btn-warning">
-                <i class="fa fa-edit"></i>
-              </a>
-              <a href="/delete_proposed_trade/<%= proposed_trade.id %>" class="btn btn-danger" rel="nofollow">
+              <a href="/delete_proposed_trade/<%= proposed_trade.id %>" class="btn btn-secondary" rel="nofollow">
                 <i class="fa fa-trash-o"></i>
               </a>
             <% end %>
@@ -222,19 +231,41 @@
       <% @user.received_proposals.each do |proposed_trade| %>
         <li class="list-group-item">
           <a href="/proposed_trades/<%= proposed_trade.id %>">
-            <%= proposed_trade.status %>
+            <%= proposed_trade.status %>:
+            <%if proposed_trade.line_items[0].inventory.user_id == current_user.id%>
+              You have received an offer of
+              <%= proposed_trade.line_items[1].quantity%>
+              <%= proposed_trade.line_items[1].inventory.item.name%>
+              from
+              <%= proposed_trade.line_items[1].inventory.user.first_name %>
+              <%= proposed_trade.line_items[1].inventory.user.last_name %>
+              in return for <%=proposed_trade.line_items[0].quantity%>
+               of your
+               <%= proposed_trade.line_items[0].inventory.item.name.pluralize%>
+            <%else%>
+            You have received an offer of
+            <%= proposed_trade.line_items[0].quantity%>
+            <%= proposed_trade.line_items[0].inventory.item.name%>
+            from
+            <%= proposed_trade.line_items[0].inventory.user.first_name %>
+            <%= proposed_trade.line_items[0].inventory.user.last_name %>
+            in return for <%=proposed_trade.line_items[1].quantity%>
+             of your
+             <%= proposed_trade.line_items[1].inventory.item.name.pluralize%>
+            <%end%>
           </a>
           <div class="btn-group btn-group-xs pull-right">
-            <a href="/proposed_trades/<%= proposed_trade.id %>" class="btn btn-primary">
-              <i class="fa fa-search-plus"></i>
+            <a href = "/trade_proposal_status_update/<%=proposed_trade.id%>/accepted" method = "post" class="btn btn-success" rel="nofollow">
+                <i class="fa fa-thumbs-up" aria-hidden="true"></i>
+            </a>
+
+            <a href = "/trade_proposal_status_update/<%=proposed_trade.id%>/rejected" method = "post" class="btn btn-danger" rel="nofollow">
+                <i class="fa fa-thumbs-down" aria-hidden="true"></i>
             </a>
             <%if current_user == proposed_trade.recipient %>
-              <a href="/proposed_trades/<%= proposed_trade.id %>/edit" class="btn btn-warning">
-                <i class="fa fa-edit"></i>
-              </a>
-              <a href="/delete_proposed_trade/<%= proposed_trade.id %>" class="btn btn-danger" rel="nofollow">
-                <i class="fa fa-trash-o"></i>
-              </a>
+            <a href="/delete_proposed_trade/<%= proposed_trade.id %>" class="btn btn-secondary" rel="nofollow">
+              <i class="fa fa-trash-o"></i>
+            </a>
             <% end %>
           </div>
         </li>

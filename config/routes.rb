@@ -130,6 +130,8 @@ Rails.application.routes.draw do
   get "/users", :controller => "users", :action => "index"
   get "/users/:id", :controller => "users", :action => "show"
 
+  post "/trade_proposal_status_update/:id", :controller => "users", :action => "update_status"
+
   get "/users/:id/inventories", :controller => "users", :action => "show_inventories"
 
 

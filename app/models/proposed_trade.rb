@@ -20,6 +20,7 @@ class ProposedTrade < ApplicationRecord
 
   # Validations
 
-  validates :star_rating, :inclusion => { :in => [ '1', '2', '3', '4', '5' ]  }
+  validates :star_rating, :inclusion => { :in => [ nil,'1', '2', '3', '4', '5' ]  }
+  validates :status, :inclusion => { :in => [ 'Accepted','Rejected','Pending' ]  }
 
 end

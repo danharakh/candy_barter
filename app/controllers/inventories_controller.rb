@@ -94,4 +94,9 @@ class InventoriesController < ApplicationController
       redirect_back(:fallback_location => "/", :notice => "Inventory deleted.")
     end
   end
+
+  def propose_trade
+    @target_inventory = Inventory.find_by({:id => params[:id].to_i})
+  end
+
 end

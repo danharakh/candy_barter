@@ -31,27 +31,52 @@ class ProposedTradesController < ApplicationController
   end
 
   def create
+
+    # create propose new trade
+    # create new line item 1
+    # create new line item 2
+    # redirect home
+
     @proposed_trade = ProposedTrade.new
 
-    @proposed_trade.status = params[:status]
-    @proposed_trade.star_rating = params[:star_rating]
-    @proposed_trade.proposer_id = params[:proposer_id]
-    @proposed_trade.recipient_id = params[:recipient_id]
+    @proposed_trade.status = 'Pending'
+    @proposed_trade.star_rating = nil
+    @proposed_trade.proposer_id = current_user.id
+    @proposed_trade.recipient_id = Inventory.find_by({:id =>params[:target_inventory].to_i}).user.id
 
-    save_status = @proposed_trade.save
+    save_status_proposed_trade = @proposed_trade.save
 
-    if save_status == true
-      referer = URI(request.referer).path
+    @line_item_1 = LineItem.new
 
-      case referer
-      when "/proposed_trades/new", "/create_proposed_trade"
-        redirect_to("/proposed_trades")
-      else
-        redirect_back(:fallback_location => "/", :notice => "Proposed trade created successfully.")
-      end
-    else
-      render("proposed_trades/new.html.erb")
-    end
+    @line_item_1.inventory_id = params[:target_inventory].to_i
+    @line_item_1.proposed_trade_id = @proposed_trade.id
+    @line_item_1.quantity = 1
+
+    save_status_line_item_1 = @line_item_1.save
+
+    @line_item_2 = LineItem.new
+
+    @line_item_2.inventory_id = params[:item_id].to_i
+    @line_item_2.proposed_trade_id = @proposed_trade.id
+    @line_item_2.quantity = 1
+
+    save_status_line_item_2 = @line_item_2.save
+
+    redirect_to("/")
+
+    # if save_status == true
+    #   referer = URI(request.referer).path
+    #
+    #   case referer
+    #   when "/proposed_trades/new", "/create_proposed_trade"
+    #     redirect_to("/proposed_trades")
+    #   else
+    #     redirect_back(:fallback_location => "/", :notice => "Proposed trade created successfully.")
+    #   end
+    # else
+    #   render("proposed_trades/new.html.erb")
+    # end
+
   end
 
   def edit
@@ -96,8 +121,4 @@ class ProposedTradesController < ApplicationController
     end
   end
 
-  def propose_trade
-
-  end
-  
 end
