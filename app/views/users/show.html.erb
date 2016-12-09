@@ -1,0 +1,316 @@
+<div class="page-header">
+  <h3><%= @user.first_name %> <%=@user.last_name%></h3>
+  <h4><sub><%=@user.email%></sub></h4>
+</div>
+
+<!-- A User has many memberships -->
+
+<div class="row">
+  <div class="col-md-12">
+    <ul class="list-group">
+      <li class="list-group-item list-group-item-info">
+        Memberships
+      </li>
+
+      <% @user.memberships.each do |membership| %>
+        <li class="list-group-item">
+          <a href="/memberships/<%= membership.id %>">
+            <%= membership.organization.name %>
+          </a>
+          <div class="btn-group btn-group-xs pull-right">
+            <%if current_user == membership.user %>
+              <a href="/delete_membership/<%= membership.id %>" class="btn btn-danger" rel="nofollow">
+                <i class="fa fa-trash-o"></i>
+              </a>
+            <% end %>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <form action="/create_membership" method="post">
+      <!-- Hidden input for authenticity token to protect from forgery -->
+      <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
+
+      <!-- Label and input for user_id -->
+      <input type="hidden" name="user_id" value="<%= current_user.id %>">
+
+      <!-- Label and input for organization_id -->
+      <div class="form-group">
+        <label for="organization_id" class="control-label">
+          Add membership to the following Organization
+        </label>
+
+        <%= select_tag(:organization_id, options_from_collection_for_select(Organization.all, :id, :name), :class => "form-control") %>
+      </div>
+
+      <button class="btn btn-success">
+        Add Membership
+      </button>
+    </form>
+    <a href="/organizations/new">
+      <button class="btn btn-info">
+        Organization doesn't exist?
+        Create it!
+      </button>
+    </a>
+  </div>
+</div>
+
+
+<!-- A User has many inventories -->
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        My Candy Inventory
+      </div>
+  <div class="panel-body">
+    <ul class="list-group">
+      <table style="width:100%">
+        <tr>
+          <th>Item</th>
+          <th>Quantity</th>
+          <th>Description</th>
+        </tr>
+      <% @user.inventories.each do |inventory| %>
+        <tr>
+          <td>
+          <a href="/inventories/<%= inventory.id %>">
+            <%= inventory.item.name %>
+          </a>
+          </td>
+          <td><%= inventory.quantity %></td>
+          <td><%= inventory.item.descriptive_information %></td>
+          <td>
+          <div class="btn-group btn-group-xs pull-right">
+            <%if current_user == inventory.user %>
+              <a href="/inventories/<%= inventory.id %>/edit" class="btn btn-warning">
+                <i class="fa fa-edit"></i>
+              </a>
+              <a href="/delete_inventory/<%= inventory.id %>" class="btn btn-danger" rel="nofollow">
+                <i class="fa fa-trash-o"></i>
+              </a>
+            <% end %>
+          </div>
+        </td>
+        </tr>
+      <% end %>
+      </table>
+    </ul>
+    </div>
+  </div>
+</div>
+
+<!-- drop down box to add  candy inventory -->
+<div class="row">
+  <div class="col-md-4">
+    <form action="/create_inventory" method="post">
+      <!-- Hidden input for authenticity token to protect from forgery -->
+      <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
+
+      <!-- Label and input for user_id -->
+      <input type="hidden" name="user_id" value="<%= current_user.id %>">
+
+      <!-- Label and input for item_id -->
+      <div class="form-group">
+        <label for="item_id" class="control-label">
+          Add candy to your stash:
+        </label>
+        <%= select_tag(:item_id, options_from_collection_for_select(Item.all, :id, :name),
+         :class => "form-control") %>
+      </div>
+
+      <!-- Label and input for quantity -->
+      <div class="form-group">
+        <label for="quantity" class="control-label">
+          Quantity
+        </label>
+
+        <input type="text" id="quantity" name="quantity" placeholder="Quantity" class="form-control" value="1">
+      </div>
+
+      <button class="btn btn-success">
+        Create Inventory
+      </button>
+
+
+    </form>
+    <a href="/items/new">
+      <button class="btn btn-info">
+        Candy doesn't exist?
+        Create it!
+      </button>
+    </a>
+  </div>
+</div>
+</div>
+
+<a href="/users" class="btn btn-primary">Browse Others' Stashes and Propose a Trade!</a>
+<!-- A User has many sent_proposals -->
+
+<div class="row">
+  <div class="col-md-12">
+    <ul class="list-group">
+      <li class="list-group-item list-group-item-info">
+        Sent_proposals
+      </li>
+
+      <% @user.sent_proposals.each do |proposed_trade|%>
+        <ul class="list-group">
+        <li class="list-group-item">
+          <a href="/proposed_trades/<%= proposed_trade.id %>">
+            <%= proposed_trade.status %>:
+            <%if proposed_trade.line_items[0].inventory.user_id == current_user.id%>
+              You have offered <%=proposed_trade.line_items[0].quantity%> <%= proposed_trade.line_items[0].inventory.item.name%>
+               to <%= proposed_trade.line_items[1].inventory.user.first_name %>
+               <%= proposed_trade.line_items[1].inventory.user.last_name %>
+               in return for
+              <%= proposed_trade.line_items[1].quantity%>  <%= proposed_trade.line_items[1].inventory.item.name%>
+            <%else%>
+            You have offered <%=proposed_trade.line_items[1].quantity%> <%= proposed_trade.line_items[1].inventory.item.name%>
+             to <%= proposed_trade.line_items[0].inventory.user.first_name %>
+             <%= proposed_trade.line_items[0].inventory.user.last_name %>
+             in return for
+            <%= proposed_trade.line_items[0].quantity%> <%= proposed_trade.line_items[0].inventory.item.name%>
+            <%end%>
+          </a>
+
+          <div class="btn-group btn-group-xs pull-right">
+
+            <%if current_user == proposed_trade.proposer %>
+              <a href="/delete_proposed_trade/<%= proposed_trade.id %>" class="btn btn-secondary" rel="nofollow">
+                <i class="fa fa-trash-o"></i>
+              </a>
+            <% end %>
+          </div>
+        </li>
+
+        <%if !proposed_trade.comments.empty?%>
+        <li class="list-group-item">
+        <ul class="list-group">
+        <%proposed_trade.comments.each do |comment| %>
+        <li class="list-group-item">
+          <%= comment.user.first_name %> says:
+          <%= comment.body %>
+        </li>
+        <%end%>
+      </ul>
+    </li>
+      <%end%>
+
+        <li class="list-group-item">
+          <form action="/create_comment" method="post">
+                <!-- Hidden input for authenticity token to protect from forgery -->
+                <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
+                <!-- Label and input for photo_id -->
+                  <input type="hidden" id="proposed_trade_id" name="proposed_trade_id" placeholder="Proposed_trade" class="form-control" value="<%= proposed_trade.id %>">
+
+                  <input type="hidden" id="user_id" name="user_id" placeholder="User" class="form-control" value="<%= proposed_trade.proposer_id %>">
+
+                <!-- Label and input for body -->
+                <div class="form-group">
+
+                  <input type="text" id="body" name="body" placeholder="add a comment" class="form-control" rows="1" required>
+
+                </div>
+              </form>
+        </li>
+      </ul>
+      <% end %>
+    </ul>
+  </div>
+</div>
+
+<!-- A User has many received_proposals -->
+
+<div class="row">
+  <div class="col-md-12">
+    <ul class="list-group">
+      <li class="list-group-item list-group-item-info">
+        Received_proposals
+      </li>
+
+      <% @user.received_proposals.each do |proposed_trade| %>
+      <ul class="list-group">
+        <li class="list-group-item">
+          <a href="/proposed_trades/<%= proposed_trade.id %>">
+            <%= proposed_trade.status %>:
+            <%if proposed_trade.line_items[0].inventory.user_id == current_user.id%>
+              You have received an offer of
+              <%= proposed_trade.line_items[1].quantity%>
+              <%= proposed_trade.line_items[1].inventory.item.name%>
+              from
+              <%= proposed_trade.line_items[1].inventory.user.first_name %>
+              <%= proposed_trade.line_items[1].inventory.user.last_name %>
+              in return for <%=proposed_trade.line_items[0].quantity%>
+               of your
+               <%= proposed_trade.line_items[0].inventory.item.name.pluralize%>
+            <%else%>
+            You have received an offer of
+            <%= proposed_trade.line_items[0].quantity%>
+            <%= proposed_trade.line_items[0].inventory.item.name%>
+            from
+            <%= proposed_trade.line_items[0].inventory.user.first_name %>
+            <%= proposed_trade.line_items[0].inventory.user.last_name %>
+            in return for <%=proposed_trade.line_items[1].quantity%>
+             of your
+             <%= proposed_trade.line_items[1].inventory.item.name.pluralize%>
+            <%end%>
+          </a>
+        <div class="btn-group btn-group-xs pull-right">
+            <a href = "/trade_proposal_status_update/<%=proposed_trade.id%>/accepted"  class="btn btn-success" rel="nofollow">
+                <i class="fa fa-thumbs-up" aria-hidden="true"></i>
+            </a>
+
+            <a href = "/trade_proposal_status_update/<%=proposed_trade.id%>/rejected" class="btn btn-danger" rel="nofollow">
+                <i class="fa fa-thumbs-down" aria-hidden="true"></i>
+            </a>
+            <%if current_user == proposed_trade.recipient %>
+            <a href="/delete_proposed_trade/<%= proposed_trade.id %>" class="btn btn-secondary" rel="nofollow">
+              <i class="fa fa-trash-o"></i>
+            </a>
+            <% end %>
+          </div>
+        </li>
+
+        <%if !proposed_trade.comments.empty?%>
+        <li class="list-group-item">
+        <ul class="list-group">
+        <%proposed_trade.comments.each do |comment| %>
+        <li class="list-group-item">
+          <%= comment.user.first_name %> says:
+          <%= comment.body %>
+        </li>
+        <%end%>
+      </ul>
+    </li>
+      <%end%>
+
+        <li class="list-group-item">
+          <form action="/create_comment" method="post">
+                <!-- Hidden input for authenticity token to protect from forgery -->
+                <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
+                <!-- Label and input for photo_id -->
+                  <input type="hidden" id="proposed_trade_id" name="proposed_trade_id" placeholder="Proposed_trade" class="form-control" value="<%= proposed_trade.id %>">
+
+                  <input type="hidden" id="user_id" name="user_id" placeholder="User" class="form-control" value="<%= proposed_trade.recipient_id %>">
+
+                <!-- Label and input for body -->
+                <div class="form-group">
+
+                  <input type="text" id="body" name="body" placeholder="add a comment" class="form-control" rows="1" required>
+
+                </div>
+              </form>
+        </li>
+      </ul>
+      <% end %>
+    </ul>
+  </div>
+</div>

@@ -1,0 +1,33 @@
+<div class="page-header">
+  <h3>Why not propose a trade?
+    <sub> Click on an item to propose a trade</sub>
+  </h3>
+</div>
+<div class="row">
+  <div class="col-md-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        Candy Inventory
+      </div>
+
+      <table style="width:100%">
+        <tr>
+          <th>Item</th>
+          <th>Quantity</th>
+          <th>Description</th>
+        </tr>
+      <% @inventory.each do |inventory| %>
+        <tr>
+          <td>
+          <a href="/inventories/<%= inventory.id %>/propose_trade">
+            <%= inventory.item.name %>
+          </a>
+          </td>
+          <td><%= inventory.quantity %></td>
+          <td><%= inventory.item.descriptive_information %></td>
+        </tr>
+      <% end %>
+      </table>
+    </div>
+  </div>
+</div>

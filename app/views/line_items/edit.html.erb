@@ -1,0 +1,55 @@
+<!-- Validation failure messages -->
+<% if @line_item.errors.any? %>
+  <% @line_item.errors.full_messages.each do |message| %>
+    <div class="alert alert-dismissable alert-danger">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+      <%= message %>
+    </div>
+  <% end %>
+<% end %>
+
+<div class="page-header">
+  <h3>Edit Line Item #<%= @line_item.id %></h3>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <form action="/update_line_item/<%= @line_item.id %>" method="post">
+      <!-- Hidden input for authenticity token to protect from forgery -->
+      <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
+
+      <!-- Label and input for inventory_id -->
+      <div class="form-group">
+        <label for="inventory_id" class="control-label">
+          Inventory
+        </label>
+
+        <%= select_tag(:inventory_id, options_from_collection_for_select(Inventory.all, :id, :user_id, @line_item.inventory_id), :class => "form-control") %>
+      </div>
+
+      <!-- Label and input for proposed_trade_id -->
+      <div class="form-group">
+        <label for="proposed_trade_id" class="control-label">
+          Proposed trade
+        </label>
+
+        <%= select_tag(:proposed_trade_id, options_from_collection_for_select(ProposedTrade.all, :id, :status, @line_item.proposed_trade_id), :class => "form-control") %>
+      </div>
+
+      <!-- Label and input for quantity -->
+      <div class="form-group">
+        <label for="quantity" class="control-label">
+          Quantity
+        </label>
+
+        <input type="text" id="quantity" name="quantity" placeholder="Quantity" class="form-control" value="<%= @line_item.quantity %>">
+      </div>
+
+      <button class="btn btn-warning">
+        Update Line Item
+      </button>
+      or
+      <a href="/line_items/<%= @line_item.id %>">Cancel</a>
+    </form>
+  </div>
+</div>

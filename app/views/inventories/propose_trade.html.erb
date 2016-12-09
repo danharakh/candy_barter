@@ -1,0 +1,15 @@
+<form action = "/create_proposed_trade" method = "post">
+  <div class="form-group">
+    Try to Acquire:
+    <%=@target_inventory.item.name%>
+    from:
+    <%=@target_inventory.user.first_name%>
+    <!-- <label for="target_item">Try to Acquire:</label> -->
+    <input type="hidden" class="form-control" name = "target_inventory" value = "<%= @target_inventory.id %>">
+  </div>
+  <div class="form-group">
+    <label for="my_item">Which candy would you like to give up?</label>
+    <%= select_tag(:item_id, options_for_select(current_user.inventories.collect{|i| [i.item.name, i.id]})) %>
+  </div>
+  <button type="submit" class="btn btn-default">Submit</button>
+</form>

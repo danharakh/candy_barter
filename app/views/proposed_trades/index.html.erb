@@ -1,0 +1,50 @@
+<div class="page-header">
+  <h1>
+    Proposed trades
+    <a href="/proposed_trades/new" class="btn btn-lg btn-success">New Proposed trade</a>
+  </h1>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <table class="table table-striped table-hover">
+      <tr>
+        <th>Status</th>
+        <th>Star rating</th>
+        <th>Proposer</th>
+        <th>Recipient</th>
+        <th>Actions</th>
+      </tr>
+
+      <% @proposed_trades.each do |proposed_trade| %>
+      <tr>
+        <td><%= proposed_trade.status %></td>
+        <td><%= proposed_trade.star_rating %></td>
+        <td>
+          <% if proposed_trade.proposer.present? %>
+            <a href="/users/<%= proposed_trade.proposer.id %>">
+              <%= proposed_trade.proposer.email %>
+            </a>
+          <% end %>
+        </td>
+        <td>
+          <% if proposed_trade.recipient.present? %>
+            <a href="/users/<%= proposed_trade.recipient.id %>">
+              <%= proposed_trade.recipient.email %>
+            </a>
+          <% end %>
+        </td>
+        <td>
+          <a href="/proposed_trades/<%= proposed_trade.id %>" class="btn btn-primary">Show</a>
+          
+          <% if current_user == proposed_trade.proposer %>
+            <a href="/proposed_trades/<%= proposed_trade.id %>/edit" class="btn btn-warning">Edit</a>
+            <a href="/delete_proposed_trade/<%= proposed_trade.id %>" class="btn btn-danger" rel="nofollow">Delete</a>
+          <% end %>
+        </td>
+      </tr>
+      <% end %>
+    </table>
+    <%= paginate @proposed_trades, theme: 'twitter-bootstrap-4' %>
+  </div>
+</div>

@@ -1,0 +1,97 @@
+<div class="page-header">
+  <h3>Item #<%= @item.id %></h3>
+</div>
+
+<div class="row">
+  <div class="col-md-12 mb-2">
+    <dl class="dl-horizontal">
+      <dt>Name</dt>
+      <dd><%= @item.name %></dd>
+
+      <dt>Descriptive information</dt>
+      <dd><%= @item.descriptive_information %></dd>
+
+      <dt>Image url</dt>
+      <dd><%= @item.image_url %></dd>
+
+    </dl>
+
+    <div class="btn-group btn-group-justified">
+      <a href="/items" class="btn btn-primary">
+        Back
+      </a>
+      <a href="/items/<%= @item.id %>/edit" class="btn btn-warning">
+        Edit
+      </a>
+      <a href="/delete_item/<%= @item.id %>" class="btn btn-danger" rel="nofollow">
+        Delete
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- A Item has many inventories -->
+
+<div class="row">
+  <div class="col-md-12">
+    <ul class="list-group">
+      <li class="list-group-item list-group-item-info">
+        Inventories
+      </li>
+
+      <% @item.inventories.each do |inventory| %>
+        <li class="list-group-item">
+          <a href="/inventories/<%= inventory.id %>">
+            <%= inventory.user_id %>
+          </a>
+          <div class="btn-group btn-group-xs pull-right">
+            <a href="/inventories/<%= inventory.id %>" class="btn btn-primary">
+              <i class="fa fa-search-plus"></i>
+            </a>
+            <a href="/inventories/<%= inventory.id %>/edit" class="btn btn-warning">
+              <i class="fa fa-edit"></i>
+            </a>
+            <a href="/delete_inventory/<%= inventory.id %>" class="btn btn-danger" rel="nofollow">
+              <i class="fa fa-trash-o"></i>
+            </a>
+          </div>
+        </li>
+      <% end %>
+
+      <li class="list-group-item">
+        <form action="/create_inventory" method="post">
+      <!-- Hidden input for authenticity token to protect from forgery -->
+      <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
+
+      <!-- Label and input for user_id -->
+      <input type="hidden" name="user_id" value="<%= current_user.id %>">
+
+      <!-- Label and input for item_id -->
+      <input type="hidden" name="item_id" value="<%= @item.id %>">
+
+      <!-- Label and input for quantity -->
+      <div class="form-group">
+        <label for="quantity" class="control-label">
+          Quantity
+        </label>
+
+        <input type="text" id="quantity" name="quantity" placeholder="Quantity" class="form-control" value="">
+      </div>
+
+      <!-- Label and input for proposed_trade_id -->
+      <div class="form-group">
+        <label for="proposed_trade_id" class="control-label">
+          Proposed trade
+        </label>
+
+        <%= select_tag(:proposed_trade_id, options_from_collection_for_select(ProposedTrade.all, :id, :status), :class => "form-control") %>
+      </div>
+
+      <button class="btn btn-block btn-success">
+        Create Inventory
+      </button>
+    </form>
+      </li>
+    </ul>
+  </div>
+</div>
