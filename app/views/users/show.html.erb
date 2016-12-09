@@ -68,14 +68,10 @@
   <div class="col-md-6">
     <div class="panel panel-default">
       <div class="panel-heading">
-        Candy Inventory
+        My Candy Inventory
       </div>
-  <div class="col-md-12">
+  <div class="panel-body">
     <ul class="list-group">
-      <li class="list-group-item list-group-item-info">
-        Inventories
-      </li>
-
       <table style="width:100%">
         <tr>
           <th>Item</th>
@@ -106,6 +102,7 @@
         </tr>
       <% end %>
       </table>
+    </ul>
     </div>
   </div>
 </div>
@@ -152,8 +149,9 @@
     </a>
   </div>
 </div>
+</div>
 
-<a href="/propose_trade" class="btn btn-primary">Propose Trade</a>
+<a href="/users" class="btn btn-primary">Browse Others' Stashes and Propose a Trade!</a>
 <!-- A User has many sent_proposals -->
 
 <div class="row">
@@ -163,7 +161,7 @@
         Sent_proposals
       </li>
 
-      <% @user.sent_proposals.each do |proposed_trade| %>
+      <% @user.sent_proposals.each do |proposed_trade|%>
         <ul class="list-group">
         <li class="list-group-item">
           <a href="/proposed_trades/<%= proposed_trade.id %>">

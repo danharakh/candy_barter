@@ -30,6 +30,7 @@ class InventoriesController < ApplicationController
   end
 
   def create
+
     @inventory = Inventory.new
 
     @inventory.user_id = params[:user_id]

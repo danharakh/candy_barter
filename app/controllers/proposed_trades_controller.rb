@@ -36,7 +36,6 @@ class ProposedTradesController < ApplicationController
     # create new line item 1
     # create new line item 2
     # redirect home
-
     @proposed_trade = ProposedTrade.new
 
     @proposed_trade.status = 'Pending'

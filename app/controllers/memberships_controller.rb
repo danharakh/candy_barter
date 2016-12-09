@@ -41,12 +41,12 @@ class MembershipsController < ApplicationController
 
       case referer
       when "/memberships/new", "/create_membership"
-        redirect_to("/memberships")
+        redirect_to("/")
       else
         redirect_back(:fallback_location => "/", :notice => "Membership created successfully.")
       end
     else
-      render("memberships/new.html.erb")
+      redirect_back(:fallback_location => "/", :notice => "There was a problem adding the new membership.")
     end
   end
 
