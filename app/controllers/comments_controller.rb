@@ -42,12 +42,12 @@ class CommentsController < ApplicationController
 
       case referer
       when "/comments/new", "/create_comment"
-        redirect_to("/comments")
+        redirect_to("/")
       else
         redirect_back(:fallback_location => "/", :notice => "Comment created successfully.")
       end
     else
-      render("comments/new.html.erb")
+      render("/")
     end
   end
 

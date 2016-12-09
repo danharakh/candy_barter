@@ -87,9 +87,6 @@
           <td><%= inventory.item.descriptive_information %></td>
           <td>
           <div class="btn-group btn-group-xs pull-right">
-            <a href="/inventories/<%= inventory.id %>" class="btn btn-primary">
-              <i class="fa fa-search-plus"></i>
-            </a>
             <%if current_user == inventory.user %>
               <a href="/inventories/<%= inventory.id %>/edit" class="btn btn-warning">
                 <i class="fa fa-edit"></i>
@@ -154,6 +151,7 @@
       </li>
 
       <% @user.sent_proposals.each do |proposed_trade| %>
+        <ul class="list-group">
         <li class="list-group-item">
           <a href="/proposed_trades/<%= proposed_trade.id %>">
             <%= proposed_trade.status %>:
@@ -174,13 +172,45 @@
 
           <div class="btn-group btn-group-xs pull-right">
 
-            <%if current_user == proposed_trade.recipient %>
+            <%if current_user == proposed_trade.proposer %>
               <a href="/delete_proposed_trade/<%= proposed_trade.id %>" class="btn btn-secondary" rel="nofollow">
                 <i class="fa fa-trash-o"></i>
               </a>
             <% end %>
           </div>
         </li>
+
+        <%if !proposed_trade.comments.empty?%>
+        <li class="list-group-item">
+        <ul class="list-group">
+        <%proposed_trade.comments.each do |comment| %>
+        <li class="list-group-item">
+          <%= comment.user.first_name %> says:
+          <%= comment.body %>
+        </li>
+        <%end%>
+      </ul>
+    </li>
+      <%end%>
+
+        <li class="list-group-item">
+          <form action="/create_comment" method="post">
+                <!-- Hidden input for authenticity token to protect from forgery -->
+                <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
+                <!-- Label and input for photo_id -->
+                  <input type="hidden" id="proposed_trade_id" name="proposed_trade_id" placeholder="Proposed_trade" class="form-control" value="<%= proposed_trade.id %>">
+
+                  <input type="hidden" id="user_id" name="user_id" placeholder="User" class="form-control" value="<%= proposed_trade.proposer_id %>">
+
+                <!-- Label and input for body -->
+                <div class="form-group">
+
+                  <input type="text" id="body" name="body" placeholder="add a comment" class="form-control" rows="1" required>
+
+                </div>
+              </form>
+        </li>
+      </ul>
       <% end %>
     </ul>
   </div>
@@ -196,6 +226,7 @@
       </li>
 
       <% @user.received_proposals.each do |proposed_trade| %>
+      <ul class="list-group">
         <li class="list-group-item">
           <a href="/proposed_trades/<%= proposed_trade.id %>">
             <%= proposed_trade.status %>:
@@ -221,7 +252,7 @@
              <%= proposed_trade.line_items[1].inventory.item.name.pluralize%>
             <%end%>
           </a>
-          <div class="btn-group btn-group-xs pull-right">
+        <div class="btn-group btn-group-xs pull-right">
             <a href = "/trade_proposal_status_update/<%=proposed_trade.id%>/accepted"  class="btn btn-success" rel="nofollow">
                 <i class="fa fa-thumbs-up" aria-hidden="true"></i>
             </a>
@@ -236,39 +267,38 @@
             <% end %>
           </div>
         </li>
-      <% end %>
-    </ul>
-  </div>
-</div>
 
-<!-- A User has many comments -->
-
-<div class="row">
-  <div class="col-md-12">
-    <ul class="list-group">
-      <li class="list-group-item list-group-item-info">
-        Comments
-      </li>
-
-      <% @user.comments.each do |comment| %>
+        <%if !proposed_trade.comments.empty?%>
         <li class="list-group-item">
-          <a href="/comments/<%= comment.id %>">
-            <%= comment.proposed_trade_id %>
-          </a>
-          <div class="btn-group btn-group-xs pull-right">
-            <a href="/comments/<%= comment.id %>" class="btn btn-primary">
-              <i class="fa fa-search-plus"></i>
-            </a>
-            <%if current_user == comment.user %>
-              <a href="/comments/<%= comment.id %>/edit" class="btn btn-warning">
-                <i class="fa fa-edit"></i>
-              </a>
-              <a href="/delete_comment/<%= comment.id %>" class="btn btn-danger" rel="nofollow">
-                <i class="fa fa-trash-o"></i>
-              </a>
-            <% end %>
-          </div>
+        <ul class="list-group">
+        <%proposed_trade.comments.each do |comment| %>
+        <li class="list-group-item">
+          <%= comment.user.first_name %> says:
+          <%= comment.body %>
         </li>
+        <%end%>
+      </ul>
+    </li>
+      <%end%>
+
+        <li class="list-group-item">
+          <form action="/create_comment" method="post">
+                <!-- Hidden input for authenticity token to protect from forgery -->
+                <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
+                <!-- Label and input for photo_id -->
+                  <input type="hidden" id="proposed_trade_id" name="proposed_trade_id" placeholder="Proposed_trade" class="form-control" value="<%= proposed_trade.id %>">
+
+                  <input type="hidden" id="user_id" name="user_id" placeholder="User" class="form-control" value="<%= proposed_trade.recipient_id %>">
+
+                <!-- Label and input for body -->
+                <div class="form-group">
+
+                  <input type="text" id="body" name="body" placeholder="add a comment" class="form-control" rows="1" required>
+
+                </div>
+              </form>
+        </li>
+      </ul>
       <% end %>
     </ul>
   </div>

@@ -126,7 +126,7 @@ proposed_trades.each do |proposed_trade|
     comment = proposed_trade.comments.build
     # comment.proposed_trade_id = proposed_trade.id
     comment.user_id = [proposed_trade.proposer_id,    proposed_trade.recipient_id].sample
-    body = ["Sounds ok",
+    comment.body = ["Sounds ok",
       "Are you sure?",
       "I don't know if you can do any better",
       "Really?!?!?!?!",
