@@ -1,33 +1,6 @@
 <div class="page-header">
-  <h3>User #<%= @user.id %></h3>
-</div>
-
-<div class="row">
-  <div class="col-md-12 mb-2">
-    <dl class="dl-horizontal">
-      <dt>Email</dt>
-      <dd><%= @user.email %></dd>
-
-      <dt>Password</dt>
-      <dd><%= @user.password %></dd>
-
-      <dt>Zipcode</dt>
-      <dd><%= @user.zipcode %></dd>
-
-      <dt>First name</dt>
-      <dd><%= @user.first_name %></dd>
-
-      <dt>Last name</dt>
-      <dd><%= @user.last_name %></dd>
-
-    </dl>
-
-    <div class="btn-group btn-group-justified">
-      <a href="/users" class="btn btn-primary">
-        Back
-      </a>
-    </div>
-  </div>
+  <h3><%= @user.first_name %> <%=@user.last_name%></h3>
+  <h4><sub><%=@user.email%></sub></h4>
 </div>
 
 <!-- A User has many memberships -->
@@ -45,13 +18,7 @@
             <%= membership.organization.name %>
           </a>
           <div class="btn-group btn-group-xs pull-right">
-            <a href="/memberships/<%= membership.id %>" class="btn btn-primary">
-              <i class="fa fa-search-plus"></i>
-            </a>
             <%if current_user == membership.user %>
-              <a href="/memberships/<%= membership.id %>/edit" class="btn btn-warning">
-                <i class="fa fa-edit"></i>
-              </a>
               <a href="/delete_membership/<%= membership.id %>" class="btn btn-danger" rel="nofollow">
                 <i class="fa fa-trash-o"></i>
               </a>
@@ -255,11 +222,11 @@
             <%end%>
           </a>
           <div class="btn-group btn-group-xs pull-right">
-            <a href = "/trade_proposal_status_update/<%=proposed_trade.id%>/accepted" method = "post" class="btn btn-success" rel="nofollow">
+            <a href = "/trade_proposal_status_update/<%=proposed_trade.id%>/accepted"  class="btn btn-success" rel="nofollow">
                 <i class="fa fa-thumbs-up" aria-hidden="true"></i>
             </a>
 
-            <a href = "/trade_proposal_status_update/<%=proposed_trade.id%>/rejected" method = "post" class="btn btn-danger" rel="nofollow">
+            <a href = "/trade_proposal_status_update/<%=proposed_trade.id%>/rejected" class="btn btn-danger" rel="nofollow">
                 <i class="fa fa-thumbs-down" aria-hidden="true"></i>
             </a>
             <%if current_user == proposed_trade.recipient %>

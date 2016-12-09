@@ -16,7 +16,17 @@ class UsersController < ApplicationController
     @inventory = User.find(params[:id]).inventories
   end
 
-  def update_status
-    l;dkf
+  def accept_trade
+    p = ProposedTrade.find_by({:id => params[:id].to_i})
+    p.status = "Accepted"
+    p.save
+    redirect_to("/")
+  end
+
+  def reject_trade
+    p = ProposedTrade.find_by({:id => params[:id].to_i})
+    p.status = "Rejected"
+    p.save
+    redirect_to("/")
   end
 end
