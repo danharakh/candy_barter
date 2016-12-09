@@ -18,8 +18,8 @@
       <!-- Hidden input for authenticity token to protect from forgery -->
       <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
 
-      
-      
+      <input type="hidden" id="quantity" name="user_id" placeholder="Quantity" class="form-control" value="<%= @inventory.user.id %>">
+
 
       <!-- Label and input for item_id -->
       <div class="form-group">
@@ -39,20 +39,11 @@
         <input type="text" id="quantity" name="quantity" placeholder="Quantity" class="form-control" value="<%= @inventory.quantity %>">
       </div>
 
-      <!-- Label and input for proposed_trade_id -->
-      <div class="form-group">
-        <label for="proposed_trade_id" class="control-label">
-          Proposed trade
-        </label>
-
-        <%= select_tag(:proposed_trade_id, options_from_collection_for_select(ProposedTrade.all, :id, :status, @inventory.proposed_trade_id), :class => "form-control") %>
-      </div>
-
       <button class="btn btn-warning">
         Update Inventory
       </button>
       or
-      <a href="/inventories/<%= @inventory.id %>">Cancel</a>
+      <a href="/">Cancel</a>
     </form>
   </div>
 </div>

@@ -33,12 +33,12 @@ class ItemsController < ApplicationController
 
       case referer
       when "/items/new", "/create_item"
-        redirect_to("/items")
+        redirect_to("/")
       else
         redirect_back(:fallback_location => "/", :notice => "Item created successfully.")
       end
     else
-      render("items/new.html.erb")
+      render("/")
     end
   end
 

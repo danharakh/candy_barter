@@ -32,12 +32,12 @@ class OrganizationsController < ApplicationController
 
       case referer
       when "/organizations/new", "/create_organization"
-        redirect_to("/organizations")
+        redirect_to("/")
       else
         redirect_back(:fallback_location => "/", :notice => "Organization created successfully.")
       end
     else
-      render("organizations/new.html.erb")
+      render("/")
     end
   end
 

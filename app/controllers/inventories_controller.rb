@@ -74,12 +74,12 @@ class InventoriesController < ApplicationController
 
       case referer
       when "/inventories/#{@inventory.id}/edit", "/update_inventory"
-        redirect_to("/inventories/#{@inventory.id}", :notice => "Inventory updated successfully.")
+        redirect_to("/", :notice => "Inventory updated successfully.")
       else
         redirect_back(:fallback_location => "/", :notice => "Inventory updated successfully.")
       end
     else
-      render("inventories/edit.html.erb")
+      render("/")
     end
   end
 
